@@ -1,28 +1,31 @@
-const http = require("http");
 const fs = require("fs");
-const PORT = 2000;
-const hostname = "localhost";
+const path = require("path");
 
-const home = fs.readFileSync("./index.html", "utf-8");
+const home = fs.readFileSync(path.resolve(__dirname, "index.html"), "utf-8");
 
-const server = http.createServer((req, res, next) => {
+module.exports = (req, res) => {
   console.log(req.url);
+
   if (req.url === "/") {
+    res.writeHead(200, { "Content-Type": "text/html" });
     return res.end(home);
   }
+
   if (req.url === "/about") {
+    res.writeHead(200, { "Content-Type": "text/html" });
     return res.end("<h1>about</h1>");
   }
+
   if (req.url === "/contact") {
+    res.writeHead(200, { "Content-Type": "text/html" });
     return res.end("<h1>contact</h1>");
   }
-  if (req.url === "/services") {
-    return res.end("<h1>servicess</h1>");
-  } else {
-    return res.end("<h1>$040 not found</h1>");
-  }
-});
 
-server.listen(PORT, hostname, () => {
-  console.log(`Server is working http://${hostname}:${PORT}/`);
-});
+  if (req.url === "/services") {
+    res.writeHead(200, { "Content-Type": "text/html" });
+    return res.end("<h1>services</h1>");
+  }
+
+  res.writeHead(404, { "Content-Type": "text/html" });
+  return res.end("<h1>404 not found</h1>");
+};
